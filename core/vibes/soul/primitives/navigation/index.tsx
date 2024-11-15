@@ -33,7 +33,7 @@ export interface Links {
   groups?: Array<{
     label?: string;
     href?: string;
-    links: Array<{
+    links?: Array<{
       label: string;
       href: string;
     }>;
@@ -42,14 +42,14 @@ export interface Links {
 
 interface Props {
   // searchAction: (query: string) => Promise<SerializableProduct[]>
-  accountHref: string;
+  accountHref?: string;
   activeLocale?: string;
   cartCount?: number;
-  cartHref: string;
+  cartHref?: string;
   links: Links[];
   locales?: Array<{ id: string; region: string; language: string }>;
   logo?: string | Image;
-  searchHref: string;
+  searchHref?: string;
   searchParamName?: string;
 }
 
@@ -268,14 +268,14 @@ export const Navigation = forwardRef(function Navigation(
             <Link
               aria-label="Profile"
               className="rounded-lg p-1.5 ring-primary focus-visible:outline-0 focus-visible:ring-2 @4xl:hover:bg-contrast-100"
-              href={accountHref}
+              href={accountHref || '#'}
             >
               <User className={clsx('w-5', searchOpen && 'stroke-contrast-300')} strokeWidth={1} />
             </Link>
             <Link
               aria-label="Cart"
               className="relative rounded-lg p-1.5 ring-primary focus-visible:outline-0 focus-visible:ring-2 @4xl:hover:bg-contrast-100"
-              href={cartHref}
+              href={cartHref || '#'}
             >
               <ShoppingBag
                 className={clsx('w-5', searchOpen && 'stroke-contrast-300')}
@@ -485,7 +485,7 @@ export const Navigation = forwardRef(function Navigation(
                   </li>
                 )}
                 {item.groups
-                  ?.flatMap((group) => group.links)
+                  ?.flatMap((group) => group.links || [])
                   .map((link, j) => (
                     <li key={j}>
                       <Link
@@ -527,7 +527,7 @@ export const Navigation = forwardRef(function Navigation(
                       )}
                     </li>
                   )}
-                  {group.links.map((link, idx) => (
+                  {(group.links || []).map((link, idx) => (
                     // Third Level Links
                     <li key={idx}>
                       <Link
